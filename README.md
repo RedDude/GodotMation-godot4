@@ -1,5 +1,7 @@
 # GodotMation
-An implementation of machinations framework in Godot Engine
+An implementation of machinations framework in Godot 4 
+
+**WORK IN PROGRESS**
 
 ABOUT:
 
