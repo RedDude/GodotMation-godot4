@@ -1,25 +1,25 @@
-tool
+@tool
 extends Node
 
-export(float) var version = 0.1
-export(String) var author = ""
-export(int) var time_mode = 0
-export(float) var interval = 1.0
-export(int) var actions = 0
-export(int) var distribution_mode = 0
-export(int) var color_coding = 0
-export(String) var dice = "D6"
-export(String) var skill = ""
-export(String) var multiplayer_skill = ""
-export(String) var strategy = ""
+@export var version: float = 0.1
+@export var author: String = ""
+@export var time_mode: int = 0
+@export var interval: float = 1.0
+@export var actions: int = 0
+@export var distribution_mode: int = 0
+@export var color_coding: int = 0
+@export var dice: String = "D6"
+@export var skill: String = ""
+@export var multiplayer_skill: String = ""
+@export var strategy: String = ""
 
 
-export(int) var height = 800
-export(int) var width = 600
-export(int) var number_of_runs = 100
-export(int) var visible_runs = 100
-export(int) var speed = 1
-export(bool) var autostart = true
+@export var height: int = 800
+@export var width: int = 600
+@export var number_of_runs: int = 100
+@export var visible_runs: int = 100
+@export var speed: int = 1
+@export var autostart: bool = true
 
 var nodes = [] #All the nodes, no connections. This is for state change
 var interactive_nodes = []
@@ -56,9 +56,7 @@ func setup():
 		elif node.type == 1:
 			states.append(node)
 			
-	
 
-		
 	for r in resources:
 		r.convert_label()
 		var start = get_child(r.start)
@@ -98,7 +96,7 @@ func setup():
 		t.name = "Timer"
 		add_child(t)
 		t.wait_time = interval
-		t.connect("timeout", self, "_interval_timeout")
+		t.connect("timeout", Callable(self, "_interval_timeout"))
 	print("godotmation setup end")
 	
 	

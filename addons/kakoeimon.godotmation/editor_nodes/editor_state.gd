@@ -1,4 +1,4 @@
-tool
+@tool
 extends "editor_connection.gd"
 
 var type = 1

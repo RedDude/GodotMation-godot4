@@ -1,21 +1,20 @@
-tool
+@tool
 extends Node
 
-
 var type = 8
-export(String) var caption
-export(int) var color
-export(int) var actions
-export(int) var activation_mode
+@export var caption: String
+@export var color: int
+@export var actions: int
+@export var activation_mode: int
 
-export(int) var pull_mode
+@export var pull_mode: int
 
-export(String) var resource_color
+@export var resource_color: String
 
-export(float) var caption_pos
-export(int) var thickness
-export(Vector2) var position
-export(bool) var signaller = true
+@export var caption_pos: float
+@export var thickness: int
+@export var position: Vector2
+@export var signaller: bool = true
 
 #This just exist to get the size that it is zero in the setup in godotmation.gd
 var input_resources = [] 
@@ -57,7 +56,7 @@ func apply_state():
 			var parent = get_parent()
 			if parent.has_node("Timer"):
 				var t = parent.get_node("Timer")
-				t.disconnect("timeout", parent, "_interval_timeout")
+				t.disconnect("timeout", Callable(parent, "_interval_timeout"))
 				t.queue_free()
 		emit_signal("reached_condition")
 

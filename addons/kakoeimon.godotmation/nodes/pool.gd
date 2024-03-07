@@ -1,48 +1,48 @@
-tool
+@tool
 extends Node
 
 #Pool is a node
 var type = 2
 #The name of the Node (pool) will be changed in the caption,
 #in godot only the first same name will not have a suffix. 
-export(String) var caption = ""
+@export var caption: String = ""
 #Color is just a number.
 #the color is taken from a premade array
 #see godotmation.gd for the array colors
-export(int) var color = 0
+@export var color: int = 0
 #This is not implemented yet but it is for the 
 #turn based mode.
-export(int) var actions = 0
+@export var actions: int = 0
 #Activation mode is the way the node acts in time.
 #passive for no action, in godotmation is 0
 #interactive for user interaction, in godotmation is 1.
 #automatic for nodes that will trigger with the interval loop, in godotmation is 2.
 #on start for nodes that will trigger, on the start of the execution, in godotmation is 3.
-export(int) var activation_mode = 0
+@export var activation_mode: int = 0
 #pull mode is the way the node interacts
 #pull any is when the node will pull as much as the incomming resources indicates
 #pull all will pull only if they can pull all the resources indicated by the incoming resources.
 #push any this push as much resources is possible from this node according to the output resources.
 #push all will push all the resources or none
-export(int) var pull_mode = 0
+@export var pull_mode: int = 0
 
 #This is for the resource color of the resources.
 #This is not used yet...
-export(String) var resource_color = ""
+@export var resource_color: String = ""
 #This is the resources this pool will have from the begining.
-export(int) var starting_resources = 0
+@export var starting_resources: int = 0
 #Number is the number of the resources you have in the pool
-export(int) var number = 0
+@export var number: int = 0
 
 #Capacity of the pool
-export(int) var capacity = -1
+@export var capacity: int = -1
 
 #For the diagram, it is the place the caption is positioned
-export(float) var caption_pos = 0
+@export var caption_pos: float = 0
 #Thickness is 2.0 and must be removed
-export(int) var thickness = 2
+@export var thickness: int = 2
 #This is for the position of the node in the machinations diagram
-export(Vector2) var position
+@export var position: Vector2
 
 ####### Extra vars for the functionality of the pool
 
@@ -64,10 +64,10 @@ var input_conditional_states = []
 #This is used for communication with other godot objects
 signal state_changed
 #and the bool for checking if we want an emittion to happen.
-export(bool) var emit_state_changed = false
+@export var emit_state_changed: bool = false
 
 #This is used to turn on and off the pool node, it is used by the conditional input states
-export(bool) var active = true
+@export var active: bool = true
 
 #input_number is the number of the resources that are going to get in the pool, 
 #the change in number will be applied when apply_change is called

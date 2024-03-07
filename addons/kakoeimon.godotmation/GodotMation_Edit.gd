@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 var selected_godotmation = null
@@ -6,28 +6,28 @@ var selected_godotmation = null
 var colors = [Color(0,0,0), Color(1,1,1)]
 
 var godotmation_name = ""
-export(float) var version
+@export var version: float
 ###### name
-export(String) var author
+@export var author: String
 
-export(float) var interval = 1.0
-export(int) var time_mode
-export(int) var distribution_mode
-export(int) var speed
-export(int) var actions = 0
-export(String) var dice = "D6"
+@export var interval: float = 1.0
+@export var time_mode: int
+@export var distribution_mode: int
+@export var speed: int
+@export var actions: int = 0
+@export var dice: String = "D6"
 
-export(String) var skill = ""
-export(String) var strategy = ""
-export(String) var multiplayer_skill = ""
+@export var skill: String = ""
+@export var strategy: String = ""
+@export var multiplayer_skill: String = ""
 
-export(int) var width
-export(int) var height
+@export var width: int
+@export var height: int
 
-export(int) var number_of_runs
-export(int) var visible_runs
+@export var number_of_runs: int
+@export var visible_runs: int
 
-export(bool) var autostart = true
+@export var autostart: bool = true
 const tools = preload("GodotMation_xml_json_tools.gd")
 
 var nodes = []
@@ -35,29 +35,26 @@ var resources = []
 var states = []
 
 ######### EDITOR VARS
-onready var drawing_area = $DrawingArea
-onready var drawing_area_nodes = $DrawingArea/Nodes
+@onready var drawing_area = $DrawingArea
+@onready var drawing_area_nodes = $DrawingArea/Nodes
 var selected_color = 0
 
-onready var pull_menu = $Panel/Nodes/PullMode/PullMode
+@onready var pull_menu = $Panel/Nodes/PullMode/PullMode
 enum pull_modes {pull_any, pull_all, push_any, push_all}
-onready var activation_menu = $Panel/Nodes/Activation/ActivationMode
+@onready var activation_menu = $Panel/Nodes/Activation/ActivationMode
 enum activation_modes {passive, interactive, automatic, on_start}
-onready var node_caption = $Panel/Nodes/Caption/Caption_LineEdit
-onready var node_thickness = $Panel/Nodes/Thickness/SpinBox
-onready var node_color = $Panel/Nodes/Color/ColorRect
-onready var node_actions = $Panel/Nodes/Actions/SpinBox
-onready var node_pull_mode = $Panel/Nodes/PullMode/PullMode
-onready var node_number = $Panel/Nodes/Number
-onready var node_capacity = $Panel/Nodes/Capacity
-onready var gate_type = $Panel/Nodes/GateType
-onready var pool_emit = $Panel/Nodes/Pool_Signal/Pool_Signal_CheckBox
-onready var queue = $Panel/Nodes/Queue/Queue_CheckBox
-onready var signaller = $Panel/Nodes/Signaller/Signaller_CheckBox
-
-onready var connection_label = $Panel/Connections/Label/Label_LineEdit
-
-
+@onready var node_caption = $Panel/Nodes/Caption/Caption_LineEdit
+@onready var node_thickness = $Panel/Nodes/Thickness/SpinBox
+@onready var node_color = $Panel/Nodes/Color/ColorRect
+@onready var node_actions = $Panel/Nodes/Actions/SpinBox
+@onready var node_pull_mode = $Panel/Nodes/PullMode/PullMode
+@onready var node_number = $Panel/Nodes/Number
+@onready var node_capacity = $Panel/Nodes/Capacity
+@onready var gate_type = $Panel/Nodes/GateType
+@onready var pool_emit = $Panel/Nodes/Pool_Signal/Pool_Signal_CheckBox
+@onready var queue = $Panel/Nodes/Queue/Queue_CheckBox
+@onready var signaller = $Panel/Nodes/Signaller/Signaller_CheckBox
+@onready var connection_label = $Panel/Connections/Label/Label_LineEdit
 
 func _ready():
 	pull_menu.get_popup().clear()
@@ -68,12 +65,11 @@ func _ready():
 	_add_gate_type_mode_menu()
 	
 	_set_main_menu()
-	connect("resized", self, "_resized")
+	connect("resized", Callable(self, "_resized"))
 	pass
 
 func _process(delta):
 	#if Engine.is_editor_hint():
-
 	var godotmation
 	if drawing_area.playing:
 		godotmation = $play_godotmation.get_child(0)
@@ -81,7 +77,7 @@ func _process(delta):
 			var c1 = drawing_area_nodes.get_child(i)
 			var c2 = godotmation.get_child(i)
 			if c1.type == 2 or c1.type == 9:
-				c1.get_node("Number").text = str(c2.number)
+				c1.get_node("Number").text = str(c2.numberValue)
 			elif c1.type == 0 and c2 and c2.type <=1:
 				c1.get_node("Label").text = c2.get_label()
 
@@ -103,13 +99,13 @@ func _add_pull_mode_menu():
 
 	pull_menu.text = popup.get_item_text(0)
 
-	popup.connect("id_pressed", self, "_pull_mode_changed")
+	popup.connect("id_pressed", Callable(self, "_pull_mode_changed"))
 
 func _pull_mode_changed(id):
 	if drawing_area.selected != null:
 		drawing_area.selected.pull_mode = id
 		pull_menu.text = pull_menu.get_popup().get_item_text(id)
-		drawing_area.selected.update()
+		drawing_area.selected.queue_redraw()
 	pass
 	
 func _add_activation_mode_menu():
@@ -121,13 +117,13 @@ func _add_activation_mode_menu():
 
 	activation_menu.text = popup.get_item_text(0)
 
-	popup.connect("id_pressed", self, "_activation_mode_changed")
+	popup.connect("id_pressed", Callable(self, "_activation_mode_changed"))
 
 func _activation_mode_changed(id):
 	if drawing_area.selected != null:
 		drawing_area.selected.activation_mode = id
 		activation_menu.text = activation_menu.get_popup().get_item_text(id)
-		drawing_area.selected.update()
+		drawing_area.selected.queue_redraw()
 	pass
 
 func _add_gate_type_mode_menu():
@@ -141,16 +137,15 @@ func _add_gate_type_mode_menu():
 
 	gate_type_menu.text = popup.get_item_text(0)
 
-	popup.connect("id_pressed", self, "_gate_type_changed")
+	popup.connect("id_pressed", Callable(self, "_gate_type_changed"))
 
 func _gate_type_changed(id):
 	var gate_type_menu = gate_type.get_node("GateType")
 	if drawing_area.selected != null:
 		drawing_area.selected.gate_type = id
 		gate_type_menu.text = gate_type_menu.get_popup().get_item_text(id)
-		drawing_area.selected.update()
+		drawing_area.selected.queue_redraw()
 	pass
-
 
 func build_from_selected():
 	_clear()
@@ -163,7 +158,6 @@ func build_from_selected():
 			if end_node.type <=1:
 				end_node = end_node.get_connection_point()
 			n.end_node = end_node
-			
 	
 	$Panel/Main/Author/Author_LineEdit.text = author
 	$Panel/Main/Interval/Label/Interval_SpinBox.value = interval
@@ -171,7 +165,6 @@ func build_from_selected():
 	$Panel/Main/Skill/Skill_LineEdit.text = skill
 	$Panel/Main/Multiplayer/Multiplayer_LineEdit.text = multiplayer_skill
 	$Panel/Main/Strategy/Strategy_LineEdit.text = strategy
-	
 
 func build_selected():
 	if not selected_godotmation: return
@@ -182,10 +175,7 @@ func _on_LoadButton_pressed():
 	$LoadFileDialog.popup()
 	pass # replace with function body
 
-
-
 func _on_LoadFileDialog_file_selected(path):
-	
 	var dict
 	if path.split(".xml").size() > 1:
 		dict = tools.parse_xml(path)
@@ -197,19 +187,15 @@ func _on_LoadFileDialog_file_selected(path):
 		tools._build_from_dict(self, dict, true)
 		_set_main_menu()
 
-
-
 func _on_SaveButton_pressed():
 	$SaveFileDialog.popup()
 	pass # replace with function body
 
-
 func _on_SaveFileDialog_file_selected(path):
-	var file = File.new()
 	if path.split(".json").size() > 1:
 		var dict = _get_dict()
-		file.open(path, File.WRITE)
-		file.store_string(to_json(dict))
+		var file = FileAccess.open(path, FileAccess.WRITE)
+		file.store_string(JSON.new().stringify(dict))
 		file.close()
 
 func _get_dict():
@@ -249,7 +235,7 @@ func _set_main_menu():
 	$Panel/Main/Skill/Skill_LineEdit.text = skill
 	$Panel/Main/Multiplayer/Multiplayer_LineEdit.text = multiplayer_skill
 	$Panel/Main/Strategy/Strategy_LineEdit.text = strategy
-	$Panel/Main/AutoStart/AutoStart_CheckBox.pressed = autostart
+	$Panel/Main/AutoStart/AutoStart_CheckBox.button_pressed = autostart
 
 func _set_node_tab(selected):
 	if selected.type >= 2:
@@ -268,7 +254,7 @@ func _set_node_tab(selected):
 			pool_emit.get_parent().show()
 			node_number.get_node("Number_SpinBox").value = selected.starting_resources
 			node_capacity.get_node("SpinBox").value = selected.capacity
-			pool_emit.pressed = selected.emit_state_changed
+			pool_emit.button_pressed = selected.emit_state_changed
 		else:
 			node_number.hide()
 			node_capacity.hide()
@@ -281,12 +267,12 @@ func _set_node_tab(selected):
 			gate_type.hide()
 		if selected.type == 7:
 			queue.get_parent().show()
-			queue.pressed = selected.queue
+			queue.button_pressed = selected.queue
 		else:
 			queue.get_parent().hide()
 		if selected.type == 8:
 			signaller.get_parent().show()
-			signaller.pressed = selected.signaller
+			signaller.button_pressed = selected.signaller
 		else:
 			signaller.get_parent().hide()
 	else:
@@ -297,7 +283,7 @@ func _set_node_tab(selected):
 func _on_PlayButton_pressed():
 	for c in $play_godotmation.get_children():
 		c.free()
-	var godotmation = preload("godotmation.tscn").instance()
+	var godotmation = preload("godotmation.tscn").instantiate()
 	$play_godotmation.add_child(godotmation)
 	tools._build_from_dict(godotmation, _get_dict(), false, false)
 	godotmation.setup()
@@ -309,7 +295,7 @@ func _on_PlayButton_pressed():
 func _connect_godotmation(godotmation):
 	for i in range(drawing_area_nodes.get_child_count()):
 		if drawing_area_nodes.get_child(i).type == 2:
-			godotmation.get_child(i).connect("state_changed", drawing_area_nodes.get_child(i), "change_number")
+			godotmation.get_child(i).connect("state_changed", Callable(drawing_area_nodes.get_child(i), "change_number"))
 			
 func _on_StopButton_pressed():
 	for n in drawing_area_nodes.get_children():
@@ -324,8 +310,6 @@ func _on_StopButton_pressed():
 	drawing_area.playing = false
 	pass # replace with function body
 
-
-
 func _on_Caption_LineEdit_text_entered(new_text):
 	var selected = drawing_area.selected
 	if selected:
@@ -336,15 +320,14 @@ func _on_Caption_LineEdit_text_entered(new_text):
 				selected.set_caption("")
 		else:
 			selected.set_caption(new_text)
-		selected.update()
+		selected.queue_redraw()
 	pass # replace with function body
-
 
 func _on_Number_SpinBox_value_changed(value):
 	var selected = drawing_area.selected
 	if selected:
 		selected.set_starting_resources(value)
-		selected.update()
+		selected.queue_redraw()
 	pass # replace with function body
 
 func _on_Pool_Signal_CheckBox_toggled(button_pressed):
@@ -357,13 +340,13 @@ func _on_Queue_CheckBox_toggled(button_pressed):
 	var selected = drawing_area.selected
 	if selected:
 		selected.queue = button_pressed
-		selected.update()
+		selected.queue_redraw()
 
 func _on_Signaller_CheckBox_toggled(button_pressed):
 	var selected = drawing_area.selected
 	if selected:
 		selected.signaller = button_pressed
-		selected.update()
+		selected.queue_redraw()
 
 #####CONECTION MENUS RETURN
 
@@ -372,13 +355,13 @@ func _on_Label_LineEdit_text_changed(new_text):
 	if selected:
 		selected.label = new_text
 		selected.get_node("Label").text = new_text
-		selected.update()
+		selected.queue_redraw()
 	pass # replace with function body
 
 
 func _resized():
-	var panel_size = $Panel.rect_min_size
-	drawing_area.rect_size = rect_size - panel_size
+	var panel_size = $Panel.custom_minimum_size
+	drawing_area.size = size - panel_size
 
 
 func _on_Author_LineEdit_text_changed(new_text):

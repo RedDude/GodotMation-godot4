@@ -25,15 +25,15 @@ static func read_string(l):
 			i +=1
 		
 
-		if l[i].is_valid_integer():
-			while i < length and l[i].is_valid_integer():
+		if l[i].is_valid_int():
+			while i < length and l[i].is_valid_int():
 				number_string += l[i]
 				i +=1
 			if i < length:
 				if l[i] == ".":
 					number_string += "."
 					i +=1
-					while i < length and l[i].is_valid_integer():
+					while i < length and l[i].is_valid_int():
 						number_string += l[i]
 						i +=1
 					var value = number.number.new()
@@ -48,7 +48,7 @@ static func read_string(l):
 				elif l[i] == "D":
 					i +=1
 					number_string += "D"
-					while i < length and l[i].is_valid_integer():
+					while i < length and l[i].is_valid_int():
 						number_string += l[i]
 						i +=1
 					var value = number.dice.new()
@@ -68,7 +68,7 @@ static func read_string(l):
 		elif l[i] == "D":
 			i +=1
 			number_string += "D"
-			while i < length and l[i].is_valid_integer():
+			while i < length and l[i].is_valid_int():
 				number_string += l[i]
 				i +=1
 			var value = number.dice.new()
@@ -85,7 +85,7 @@ static func read_string(l):
 				var value = condition.unequal.new()
 				i +=1
 				number_string = ""
-				while i < length and l[i].is_valid_integer():
+				while i < length and l[i].is_valid_int():
 					number_string += l[i]
 					i +=1
 				value.number = int(number_string)
@@ -96,7 +96,7 @@ static func read_string(l):
 				var value = condition.equal.new()
 				i +=1
 				number_string = ""
-				while i < length and l[i].is_valid_integer():
+				while i < length and l[i].is_valid_int():
 					number_string += l[i]
 					i +=1
 				value.number = int(number_string)
@@ -109,7 +109,7 @@ static func read_string(l):
 				i +=1
 			var value = condition.higher.new()
 			number_string = ""
-			while i < length and l[i].is_valid_integer():
+			while i < length and l[i].is_valid_int():
 				number_string += l[i]
 				i +=1
 			if equal:
@@ -125,7 +125,7 @@ static func read_string(l):
 				i +=1
 			var value = condition.lower.new()
 			number_string = ""
-			while i < length and l[i].is_valid_integer():
+			while i < length and l[i].is_valid_int():
 				number_string += l[i]
 				i +=1
 			if equal:

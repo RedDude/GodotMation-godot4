@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node2D
 
 # class member variables go here, for example:
@@ -11,10 +11,10 @@ func _ready():
 	var godotmation = get_child(0)
 	godotmation._interval_timeout()
 	
-	var time = OS.get_ticks_msec()
+	var time = Time.get_ticks_msec()
 	for i in range(0,400):
 		godotmation._interval_timeout()
-	print(OS.get_ticks_msec() - time)
+	print(Time.get_ticks_msec() - time)
 	
 	pass
 

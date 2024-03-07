@@ -1,20 +1,20 @@
-tool
+@tool
 extends Node
 
 
 var type = 5
-export(String) var caption
-export(int) var color
-export(int) var actions
-export(int) var activation_mode
+@export var caption: String
+@export var color: int
+@export var actions: int
+@export var activation_mode: int
 
-export(int) var pull_mode
+@export var pull_mode: int
 
-export(String) var resource_color
+@export var resource_color: String
 
-export(float) var caption_pos
-export(int) var thickness
-export(Vector2) var position
+@export var caption_pos: float
+@export var thickness: int
+@export var position: Vector2
 
 
 var input_resources = []

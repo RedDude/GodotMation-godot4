@@ -1,14 +1,14 @@
 extends Node2D
 
 
-export(String) var caption = ""
-export(Vector2) var caption_pos
+@export var caption: String = ""
+@export var caption_pos: Vector2
 
-export(int) var actions = 1
-export(int) var activation_mode = 0
-export(int) var pull_mode = 0
-export(int) var color = 0
-export(int) var thickness = 2
+@export var actions: int = 1
+@export var activation_mode: int = 0
+@export var pull_mode: int = 0
+@export var color: int = 0
+@export var thickness: int = 2
 
 
 var radius = 20

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 # class member variables go here, for example:
@@ -7,10 +7,8 @@ extends Control
 var thickness = 2
 var playing = false
 
-
-onready var nodes_container = get_node("Nodes")
-onready var buttons = get_node("../Panel/DrawPanel/GridContainer")
-
+@onready var nodes_container = get_node("Nodes")
+@onready var buttons = get_node("../Panel/DrawPanel/GridContainer")
 
 #button can be 0 for nothing, 1 for pool, 2 for resource, 3 for state
 var button_type = -1
@@ -34,15 +32,15 @@ func _ready():
 func set_selected(node = null):
 	if selected: 
 		selected.selected = false
-		selected.update()
+		selected.queue_redraw()
 	
 	selected = node
 	if node:
 		selected.selected = true
-		selected.update()
+		selected.queue_redraw()
 		get_parent()._set_node_tab(selected)
 		get_parent().get_node("Panel/Main").hide()
-		set_highlight_node()
+		set_highlight_node(node)
 	else:
 		get_parent().get_node("Panel/Main").show()
 		get_parent().get_node("Panel/Nodes").hide()
@@ -52,12 +50,12 @@ func set_selected(node = null):
 func set_highlight_node(node = null):
 	if highlight_node: 
 		highlight_node.selected = false
-		highlight_node.update()
+		highlight_node.queue_redraw()
 	
 	highlight_node = node
 	if node:
 		highlight_node.selected = true
-		highlight_node.update()
+		highlight_node.queue_redraw()
 		
 
 func to_drawing_point(point):
@@ -96,7 +94,7 @@ func _on_DrawingArea_gui_input(event):
 	################## STORE EVENT POSITION
 	var event_position
 	if event is InputEventMouseButton or event is InputEventMouseMotion:
-	 	event_position = to_drawing_point(event.position)
+		event_position = to_drawing_point(event.position)
 	
 	############ PLAYING THE DIAGRAM
 	if playing:
@@ -141,12 +139,10 @@ func _on_DrawingArea_gui_input(event):
 								selected.end_node = node.get_connection_point()
 								update_nodes()
 								break
-							
-					
+								
 				if selected and selected.get_start_end_sameness(): 
 					_on_Delete_Button_pressed()
 					update_nodes()
-
 
 		if selected and button_down and event is InputEventMouseMotion:
 			if selected.type >=2:
@@ -173,9 +169,9 @@ func _on_DrawingArea_gui_input(event):
 							if node.to_select(event_position):
 								var new_line
 								if button_type == 0:
-								 	new_line = preload("editor_nodes/editor_resource.tscn").instance()
+									new_line = preload("editor_nodes/editor_resource.tscn").instantiate()
 								else:
-									new_line = preload("editor_nodes/editor_state.tscn").instance()
+									new_line = preload("editor_nodes/editor_state.tscn").instantiate()
 								new_line.points = []
 								new_line.start_node = node
 								new_line.end_node = {"position": event_position, "radius": 0}
@@ -186,7 +182,6 @@ func _on_DrawingArea_gui_input(event):
 								break
 				else:
 					if typeof(selected.end_node) == TYPE_DICTIONARY:
-						
 						for node in nodes_container.get_children():
 							if node.type >=2 and node != selected:
 								if node.to_select(event_position):
@@ -206,7 +201,6 @@ func _on_DrawingArea_gui_input(event):
 							
 					
 		if event is InputEventMouseMotion:
-			
 			if selected and selected.type <= 1 and typeof(selected.end_node) == TYPE_DICTIONARY:
 				selected.end_node = {"position": event_position, "radius": 0}
 				if selected and selected.get_start_end_sameness(): _on_Delete_Button_pressed()
@@ -224,21 +218,21 @@ func _on_DrawingArea_gui_input(event):
 				else:
 					var node
 					if button_type == 2:
-						node = preload("editor_nodes/editor_pool.tscn").instance()
+						node = preload("editor_nodes/editor_pool.tscn").instantiate()
 					elif button_type == 3:
-						node = preload("editor_nodes/editor_gate.tscn").instance()
+						node = preload("editor_nodes/editor_gate.tscn").instantiate()
 					elif button_type == 4:
-						node = preload("editor_nodes/editor_source.tscn").instance()
+						node = preload("editor_nodes/editor_source.tscn").instantiate()
 					elif button_type == 5:
-						node = preload("editor_nodes/editor_drain.tscn").instance()
+						node = preload("editor_nodes/editor_drain.tscn").instantiate()
 					elif button_type == 6:
-						node = preload("editor_nodes/editor_converter.tscn").instance()
+						node = preload("editor_nodes/editor_converter.tscn").instantiate()
 					elif button_type == 7:
-						node = preload("editor_nodes/editor_end_condition.tscn").instance()
+						node = preload("editor_nodes/editor_end_condition.tscn").instantiate()
 					elif button_type == 8:
-						node = preload("editor_nodes/editor_delay.tscn").instance()
+						node = preload("editor_nodes/editor_delay.tscn").instantiate()
 					elif button_type == 9:
-						node = preload("editor_nodes/editor_function_call.tscn").instance()
+						node = preload("editor_nodes/editor_function_call.tscn").instantiate()
 					
 					node.position = event_position
 					nodes_container.add_child(node)
@@ -261,15 +255,13 @@ func _catch_node(pos):
 
 func update_nodes():
 	for node in nodes_container.get_children():
-		node.update()
-	#print("redrawing")
+		node.queue_redraw()
+	print("redrawing")
 	
-		
-
 func _on_StateButton_pressed():
 	for b in buttons.get_children():
 		if b.name != "StateButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 1
@@ -277,14 +269,13 @@ func _on_StateButton_pressed():
 				button_type = -1
 				
 
-
 func _on_CursorButton_pressed():
 	if selected and selected.type <= 1 and not selected.is_functional(): _on_Delete_Button_pressed()
 	for b in buttons.get_children():
 		if b.name != "CursorButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
-			b.pressed = true
+			b.button_pressed = true
 			
 	button_type = -1
 	pass # replace with function body
@@ -294,21 +285,18 @@ func _on_ResourceButton_pressed():
 	if selected and selected.type <= 1 and not selected.is_functional(): _on_Delete_Button_pressed()
 	for b in buttons.get_children():
 		if b.name != "ResourceButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 0
 			else:
 				button_type = -1
 
-
-
-
 func _on_PoolButton_pressed():
 
 	for b in buttons.get_children():
 		if b.name != "PoolButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 2
@@ -318,7 +306,7 @@ func _on_PoolButton_pressed():
 func _on_GateButton_pressed():
 	for b in buttons.get_children():
 		if b.name != "GateButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 3
@@ -331,7 +319,7 @@ func _on_GateButton_pressed():
 func _on_SourceButton_pressed():
 	for b in buttons.get_children():
 		if b.name != "SourceButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 4
@@ -343,7 +331,7 @@ func _on_SourceButton_pressed():
 func _on_DrainButton_pressed():
 	for b in buttons.get_children():
 		if b.name != "DrainButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 5
@@ -355,7 +343,7 @@ func _on_DrainButton_pressed():
 func _on_ConvertButton_pressed():
 	for b in buttons.get_children():
 		if b.name != "ConvertButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 6
@@ -368,7 +356,7 @@ func _on_ConvertButton_pressed():
 func _on_EndConditionButton_pressed():
 	for b in buttons.get_children():
 		if b.name != "EndConditionButton":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 7
@@ -379,7 +367,7 @@ func _on_EndConditionButton_pressed():
 func _on_Delay_pressed():
 	for b in buttons.get_children():
 		if b.name != "Delay":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 8
@@ -390,7 +378,7 @@ func _on_Delay_pressed():
 func _on_FunctionCall_pressed():
 	for b in buttons.get_children():
 		if b.name != "FunctionCall":
-			b.pressed = false
+			b.button_pressed = false
 		else:
 			if b.pressed:
 				button_type = 9
@@ -416,8 +404,6 @@ func _on_Delete_Button_pressed():
 	_on_CursorButton_pressed()
 	pass # replace with function body
 
-func update():
-	.update()
 
 
 

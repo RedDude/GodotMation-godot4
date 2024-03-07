@@ -1,15 +1,15 @@
-tool
+@tool
 extends Node2D
 
 var node_type = 1
 
 const ZERO2D = Vector2()
-export(int) var start
-export(int) var end
-export(String) var label = "+1"
-export(float) var label_position
-export(int) var color
-export(int) var thickness = 2.0
+@export var start: int
+@export var end: int
+@export var label: String = "+1"
+@export var label_position: float
+@export var color: int
+@export var thickness: int = 2.0
 var points = []
 var point_radius = 5
 var start_node
@@ -18,8 +18,8 @@ var end_node
 var radius = 15 #This is used for selection
 var selected = false
 
-onready var colors = get_parent().get_parent().get_parent().colors
-onready var font = get_parent().get_parent().get_parent().get_font("")
+@onready var colors = get_parent().get_parent().get_parent().colors
+@onready var font = ThemeDB.fallback_font
 
 class connection_point_class:
 	var position = Vector2()
@@ -43,7 +43,6 @@ func _ready():
 
 
 func update():
-	.update()
 	get_connection_point()
 	
 func to_select(pos):
@@ -191,8 +190,8 @@ func draw_connection_line(from, to, in_color, in_thickness, antialiased = false 
 
 func draw_label():
 	var point = get_connection_point().position
-	$Label.rect_position = point - $Label.rect_size/2
-	#draw_string(font, mid, label, colors[color])
+	$Label.position = point - $Label.size/2
+	# draw_string(font, mid, label, colors[color])
 	
 func get_connection_point():
 	if not start_node or not end_node: return

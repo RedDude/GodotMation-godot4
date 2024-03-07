@@ -1,19 +1,19 @@
-tool
+@tool
 extends Node
 
 #const number_gd = preload("number/number.gd")
 const number_tool = preload("number/number_tool.gd")
 
 var type = 0 #RESOURCE
-export(int) var color = 0
-export(String) var label = "+1"
-export(int) var end = 0
-export(int) var start = 0
+@export var color: int = 0
+@export var label: String = "+1"
+@export var end: int = 0
+@export var start: int = 0
 
-export(Array, int) var input_resources_indices = []
-export(Array, int) var output_resources_indices = []
-export(Array, int) var input_states_indices = []
-export(Array, int) var output_states_indices = []
+@export var input_resources_indices = [] # (Array, int)
+@export var output_resources_indices = [] # (Array, int)
+@export var input_states_indices = [] # (Array, int)
+@export var output_states_indices = [] # (Array, int)
 
 var input_resources = []
 var output_resources = []
@@ -24,11 +24,11 @@ var input_conditional_states = []
 
 var start_node
 var end_node
-export(Array, Vector2) var points
-export(int) var resource_type = 0
-export(int) var number = 0
-export(float) var resource_number = 0.0
-export(int) var thickness
+@export var points: Array # (Array, Vector2)
+@export var resource_type: int = 0
+@export var number: int = 0
+@export var resource_number: float = 0.0
+@export var thickness: int
 var object_number_1
 var object_number_2
 var number_resolved = false

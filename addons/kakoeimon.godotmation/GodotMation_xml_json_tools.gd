@@ -5,14 +5,13 @@ static func parse_xml(path):
 	var dict = {}
 	##### THIS IS to replace html characters from the xml
 	#### it will create a tmp.xml to be parsed cause othewise we loose compartibility
-	var file = File.new()
-	file.open(path, File.READ)
+	var file = FileAccess.open(path, FileAccess.READ)
 	var xml = file.get_as_text()
 	file.close()
 	xml = xml.replace("&lt;", "<")
-	file.open("res://addons/kakoeimon.godotmation/tmp.xml", File.WRITE)
-	file.store_string(xml)
-	file.close()
+	var fileTemp = file.open("res://addons/kakoeimon.godotmation/tmp.xml", FileAccess.WRITE)
+	fileTemp.store_string(xml)
+	fileTemp.close()
 
 	######### Now lets Parse
 	var parser = XMLParser.new()
@@ -93,7 +92,7 @@ static func attributes_to_dict(parser):
 				else:
 					data["queue"] = true
 				continue
-			elif val.is_valid_integer():
+			elif val.is_valid_int():
 				val = int(val)
 			elif val.is_valid_float():
 				val = float(val)
@@ -106,20 +105,17 @@ static func attributes_to_dict(parser):
 
 static func load_json(path):
 	var dict = {}
-	var file = File.new()
-	file.open(path, File.READ)
+	var file = FileAccess.open(path, FileAccess.READ)
 	var json = file.get_as_text()
 	file.close()
-	return parse_json(json)
-
-
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(json)
+	return test_json_conv.get_data()
 
 static func save_json(dict , filename):
-	var file = File.new()
-	file.open(filename, File.WRITE)
-	file.store_string(to_json(dict))
+	var file = FileAccess.open(filename, FileAccess.WRITE)
+	file.store_string(JSON.new().stringify(dict))
 	file.close()
-
 
 static func _build_from_dict(base, dict, in_editor = false, owner = false):
 	#print("building")
@@ -191,35 +187,35 @@ static func _build_from_dict(base, dict, in_editor = false, owner = false):
 			var child
 			match int(node.type):
 				2:
-					child = pool_pck.instance()
-					child.resource_color = node.resource_color
+					child = pool_pck.instantiate()
+					#child.resource_color = node.resource_color
 					child.starting_resources = node.starting_resources
 					child.number = node.starting_resources
 					child.capacity = node.capacity
 					child.emit_state_changed = node.emit_state_changed
 				3:
-					child = gate_pck.instance()
+					child = gate_pck.instantiate()
 					child.gate_type = node.gate_type
 				4:
-					child = source_pck.instance()
+					child = source_pck.instantiate()
 				5:
-					child = drain_pck.instance()
+					child = drain_pck.instantiate()
 				6:
-					child = converter_pck.instance()
+					child = converter_pck.instantiate()
 				7:
-					child = delay_pck.instance()
+					child = delay_pck.instantiate()
 					child.queue = node.queue
 				8:
-					child = end_condition_pck.instance()
+					child = end_condition_pck.instantiate()
 					child.signaller = node.signaller
 				9:
-					child = function_call_pck.instance()
+					child = function_call_pck.instantiate()
 				_:
 					print("NOT IN MATCH " + str(node.type))
 
 			#THE COMMON NODE VARS
 			child.caption = node.caption
-			child.caption_pos = node.caption_pos
+			#child.caption_pos = node.caption_pos
 			
 			
 			child.actions = node.actions
@@ -242,13 +238,13 @@ static func _build_from_dict(base, dict, in_editor = false, owner = false):
 			var child
 			match int(node.type):
 				0:
-					child = resource_pck.instance()
+					child = resource_pck.instantiate()
 					if node.has("points"):
 						if not child.points: child.points = []
 						for p in node.points:
 							child.points.append( Vector2(p[0], p[1]) )
 				1:
-					child = state_pck.instance()
+					child = state_pck.instantiate()
 					if node.has("points"):
 						if not child.points: child.points = []
 						for p in node.points:

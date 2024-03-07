@@ -1,19 +1,19 @@
-tool
+@tool
 extends Node
 
 
 var type = 9
 
-export(String) var caption
-export(int) var color
-export(int) var actions
-export(int) var activation_mode
-export(int) var pull_mode
-export(String) var resource_color
-export(int) var number = 0
-export(float) var caption_pos
-export(int) var thickness
-export(Vector2) var position
+@export var caption: String
+@export var color: int
+@export var actions: int
+@export var activation_mode: int
+@export var pull_mode: int
+@export var resource_color: String
+@export var number: int = 0
+@export var caption_pos: float
+@export var thickness: int
+@export var position: Vector2
 
 ####### Extra vars for the functionality of the pool
 
@@ -27,7 +27,7 @@ var reverse_trigger_states = []
 var input_conditional_states = []
 
 
-export(bool) var active = true
+@export var active: bool = true
 
 var pushed = false
 

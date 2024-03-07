@@ -12,3 +12,5 @@ export_presets.cfg
 # System/tool-specific ignores
 .directory
 *~
+.godot/
+.vscode/settings.json

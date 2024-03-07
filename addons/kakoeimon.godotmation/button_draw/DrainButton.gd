@@ -1,4 +1,4 @@
-tool
+@tool
 extends "BaseButton.gd"
 
 
@@ -11,12 +11,12 @@ func draw():
 	line.append(Vector2(gap, gap) )
 	line.append(Vector2(radius*2 - gap, gap) )
 
-	draw_colored_polygon(PoolVector2Array(line), Color(0,0,0))
+	draw_colored_polygon(PackedVector2Array(line), Color(0,0,0))
 	gap +=6
 	line = []
 	
 	line.append(Vector2(radius, radius*2 - gap) )
 	line.append(Vector2(gap, gap - 3) )
 	line.append(Vector2(radius*2 - gap, gap - 3) )
-	draw_colored_polygon(PoolVector2Array(line), Color(1,1,1))
+	draw_colored_polygon(PackedVector2Array(line), Color(1,1,1))
 	pass

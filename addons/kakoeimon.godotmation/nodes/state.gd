@@ -1,15 +1,15 @@
-tool
+@tool
 extends Node
 
 
 var node_type = 1 #CONNECTION
 var type = 1 #STATE
-export(int) var color = 0
-export(String) var label = "+1"
-export(int) var end = 0
-export(int) var start = 0
+@export var color: int = 0
+@export var label: String = "+1"
+@export var end: int = 0
+@export var start: int = 0
 
-export(Array, Vector2) var points = []
+@export var points = [] # (Array, Vector2)
 
 var input_resources = []
 var output_resources = []
@@ -21,11 +21,11 @@ var input_conditional_states = []
 var start_node
 var end_node
 
-export(int) var state_type = 0
-export(int) var number = 0
-export(int) var other_number = 0
+@export var state_type: int = 0
+@export var number: int = 0
+@export var other_number: int = 0
 
-export(int) var thickness
+@export var thickness: int
 
 var active = true
 
@@ -85,7 +85,7 @@ func get_label_data(in_label):
 	var i = 0
 	if length:
 		#####Starting with number. This is wrong value but it is setted as having + infront
-		if in_label[0] == "+" or in_label[0] == "-" or in_label[0].is_valid_integer():
+		if in_label[0] == "+" or in_label[0] == "-" or in_label[0].is_valid_int():
 			var minus = false
 			state_type = 0 #0 for + and -
 			if in_label[0] == "+":
@@ -95,7 +95,7 @@ func get_label_data(in_label):
 				i +=1
 				minus = true
 			var number_string = ""
-			while i < length and in_label[i].is_valid_integer():
+			while i < length and in_label[i].is_valid_int():
 				number_string += in_label[i]
 				i +=1 
 			number = int(number_string)
@@ -104,7 +104,7 @@ func get_label_data(in_label):
 				if in_label[i] == ".": #This means that it is a float
 					i +=1
 					number_string += "."
-				while i < length and in_label[i].is_valid_integer():
+				while i < length and in_label[i].is_valid_int():
 					number_string += in_label[i]
 					i +=1
 				number = float(number_string)
@@ -120,7 +120,7 @@ func get_label_data(in_label):
 					state_type = 4 #range conditions 
 					var new_num_string = ""
 					i +=1
-					while i < length and in_label[i].is_valid_integer():
+					while i < length and in_label[i].is_valid_int():
 						new_num_string += in_label[i]
 						i +=1 
 					if new_num_string:
@@ -135,7 +135,7 @@ func get_label_data(in_label):
 				equal = true
 				i +=1
 			var number_string = ""
-			while i < length and in_label[i].is_valid_integer():
+			while i < length and in_label[i].is_valid_int():
 				number_string += in_label[i]
 				i +=1 
 			
@@ -155,7 +155,7 @@ func get_label_data(in_label):
 				state_type = 7 # ==
 				i +=2
 				var number_string = ""
-				while i < length and in_label[i].is_valid_integer():
+				while i < length and in_label[i].is_valid_int():
 					number_string += in_label[i]
 					i +=1 
 				if number_string:
@@ -167,7 +167,7 @@ func get_label_data(in_label):
 				state_type = 8 # !=
 				i +=2
 				var number_string = ""
-				while i < length and in_label[i].is_valid_integer():
+				while i < length and in_label[i].is_valid_int():
 					number_string += in_label[i]
 					i +=1 
 				if number_string:

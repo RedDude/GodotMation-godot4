@@ -1,4 +1,4 @@
-tool
+@tool
 extends "editor_connection.gd"
 
 var type = 0
@@ -11,5 +11,5 @@ func get_dict():
 	return dict
 	
 func draw_connection_line(from, to, in_color, in_thickness, antialiased = false ):
-	draw_line(from, to, in_color, in_thickness, antialiased)
+	draw_line(from, to, in_color, in_thickness)
 	pass

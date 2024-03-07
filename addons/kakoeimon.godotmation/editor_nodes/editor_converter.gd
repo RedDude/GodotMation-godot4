@@ -1,17 +1,17 @@
-tool
+@tool
 extends "editor_node.gd"
 
 var type = 6
 
-export(int) var resource_color = 0
-export(int) var starting_resources = 0
-export(int) var number = 0
-export(int) var capacity = -1
+@export var resource_color: int = 0
+@export var starting_resources: int = 0
+@export var number: int = 0
+@export var capacity: int = -1
 
 var selected = false
 
-onready var colors = get_parent().get_parent().get_parent().colors
-onready var font = get_parent().get_parent().get_parent().get_font("")
+@onready var colors = get_parent().get_parent().get_parent().colors
+@onready var font = ThemeDB.fallback_font
 
 
 
@@ -21,7 +21,7 @@ func draw(in_color, in_thickness):
 	line.append(Vector2(radius + in_thickness*2, 0) )
 	line.append(Vector2(-radius - in_thickness, radius +in_thickness*2) )
 	
-	draw_colored_polygon(PoolVector2Array(line), in_color)
+	draw_colored_polygon(PackedVector2Array(line), in_color)
 	
 	
 func _draw():
@@ -35,16 +35,18 @@ func _draw():
 	
 	var pos = Vector2(radius + thickness, radius + thickness)
 	if pull_mode >=2:
-		var next = draw_char(font, pos, "p", "&", colors[color])
-		pos.x += next
+		draw_char(font, pos, "p", 16, colors[color])
+
+		#var next = draw_char(font, pos, "p", "&", colors[color])
+		#pos.x += next
 	if pull_mode == 1 or pull_mode == 3:
-		draw_string(font, pos,  "&", colors[color])
+		draw_string(font, pos,  "&", HORIZONTAL_ALIGNMENT_CENTER, -1, 16, colors[color])
 	
 	pos.y = -pos.y
 	if activation_mode == 1:
 		pass
 	elif activation_mode == 2:
-		draw_string(font, Vector2(),  "*", colors[color])
+		draw_string(font, Vector2(),  "*", HORIZONTAL_ALIGNMENT_CENTER, -1, 16, colors[color])
 	
 func set_starting_resources(value):
 	starting_resources = value

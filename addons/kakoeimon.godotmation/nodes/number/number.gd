@@ -8,16 +8,16 @@ class number:
 	var label = ""
 	var integer = 0
 	var floating = 0
-	var number = 0.0
+	var numberValue = 0.0
 	
 	func set_from_string(string):
 		label = string
-		number = float(string)
+		numberValue = float(string)
 		convert_value()
 		
 	func convert_value():
-		integer = int(number)
-		floating = (number - integer) * 100
+		integer = int(numberValue)
+		floating = (numberValue - integer) * 100
 		
 	func get_value():
 		var output = integer
@@ -27,7 +27,7 @@ class number:
 		return output
 		
 	func add_value(v):
-		number += v
+		numberValue += v
 		convert_value()
 		
 	func get_label():

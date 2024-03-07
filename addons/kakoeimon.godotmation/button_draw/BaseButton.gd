@@ -1,9 +1,8 @@
 extends Button
 
-
-func _pressed():
-	._pressed()
-	update()
+#func _pressed():
+	#super._pressed()
+	#update()
 
 func _draw():
 	var length = get_rect().size.x
